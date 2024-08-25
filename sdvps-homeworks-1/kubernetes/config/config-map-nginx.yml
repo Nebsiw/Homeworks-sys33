@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: redis-nginx
+  name: nginx-conf
+data:
+  nginx.conf: |
+    server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        root /var/www/html;
+        index index.html index.htm;
+        server_name _;
+        location / {
+          index index.html;
+          }
+          }

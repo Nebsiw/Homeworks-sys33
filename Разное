@@ -1,0 +1,27 @@
+Определить какое приложение на порту
+fuser 80/tcp
+Найти PID процессора
+ps -aux
+Убить процесс
+kill PID
+
+Как настроить SSH на сервере для увеличения времени сессий
+https://gist.github.com/wpupru/bde6bae25813e0f16006843e2b9893b7
+
+Для этого нужно отредактировать файл «/etc/ssh/sshd_config».
+TCPKeepAlive yes
+ClientAliveInterval 60
+ClientAliveCountMax 360
+
+echo "TCPKeepAlive yes" >> /etc/ssh/sshd_config
+echo "ClientAliveInterval 60" >> /etc/ssh/sshd_config
+echo "ClientAliveCountMax 360" >> /etc/ssh/sshd_config
+
+TCPKeepAlive установлен в «yes» — это означает, что сервер будет периодически проверять, находится ли клиент «на линии» – если он не отвечает, соединение автоматически разрывается.
+
+ClientAliveInterval — Время простоя клиента в секундах, после которого демон sshd отправляет через защищённый канал запрос клиенту. Директива работает только для протокола 2.
+
+ClientAliveCountMax — Количество проверок доступности клиента, которые могут оставаться без ответа. Если предел достигнут, sshd завершит сеанс.
+
+Переодически требуется чистка know-host
+rm --force ~/.ssh/known_hosts

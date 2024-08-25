@@ -1,0 +1,76 @@
+volumes:
+  prometheus-data: {}
+  grafana-data: {}
+  alertmanager-data: {}
+services:
+  latyshevva-netology-prometheus:
+    image: prom/prometheus:v2.36.2
+    container_name: latyshevva-netology-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    networks:
+      latyshevva-my-netology-hw:
+        ipv4_address: 10.5.0.2
+    restart: always
+
+  latyshevva-netology-pushgateway:
+    image: prom/pushgateway
+    container_name: latyshevva-netology-pushgateway
+    ports:
+      - 9091:9091
+    networks:
+      latyshevva-my-netology-hw:
+        ipv4_address: 10.5.0.3
+    depends_on:
+      - latyshevva-netology-prometheus
+    restart: unless-stopped
+
+
+  latyshevva-netology-alertmanager:
+    image: prom/alertmanager
+    container_name: latyshevva-netology-alertmanager
+    command: --config.file=/etc/alertmanager/alertmanager.yml --storage.path=/alertmanager
+    ports:
+      - 9093:9093
+    volumes:
+      - ./aletrmanager:/etc/alertmanager
+      - alertmanager-data:/data
+    networks:
+      latyshevva-my-netology-hw:
+        ipv4_address: 10.5.0.4
+    depends_on:
+      - latyshevva-netology-prometheus
+    restart: always
+
+  latyshevva-netology-grafana:
+    image: grafana/grafana
+    container_name: latyshevva-netology-grafana
+    environment:
+      GF_PATHS_CONFIG: /etc/grafana/custom.ini
+    ports:
+      - 80:3000
+    volumes:
+      - ./grafana:/etc/grafana
+      - grafana-data:/var/lib/grafana
+    networks:
+      latyshevva-my-netology-hw:
+        ipv4_address: 10.5.0.5
+    depends_on:
+      - latyshevva-netology-prometheus
+    restart: always
+
+networks:
+  latyshevva-my-netology-hw:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "10.5.0.0/16"
+          gateway: "10.5.0.1"

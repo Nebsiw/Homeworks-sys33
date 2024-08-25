@@ -1,0 +1,7 @@
+groups:
+  - name: Netology
+    rules:
+      # Alert for any instance that is unreachable for >5 minutes.
+      - alert: Danger
+        expr: docker{job="netology"} > 1
+        for: 10s
