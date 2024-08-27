@@ -50,3 +50,47 @@
   systemctl enable zabbix-server zabbix-agent apache2
   ```
 3. Авторизация ![admin.png](\admin.png)
+
+### Задание 2 
+
+Установите Zabbix Agent на два хоста.
+
+#### Ответ на задание 2
+1. Повторяем первый шаг
+```
+wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-4+debian11_all.deb
+sudo dpkg -i zabbix-release_6.0-4+debian11_all.deb
+sudo apt update
+```
+2. Установите Zabbix агент
+```
+sudo apt install zabbix-agent
+```
+3. Запустите процесс Zabbix агента
+Запустите процесс Zabbix агента и настройте его запуск при загрузке ОС
+```
+sudo systemctl restart zabbix-agent
+sudo systemctl enable zabbix-agent
+```
+4. Делаем поиск файла конфигурации агента
+```
+find / -name zabbix_agentd.conf
+```
+/etc/zabbix/zabbix_agentd.conf
+5. Настраиваем файл конфигурации агента, чтобы дать разрешение на подключение к нашему серверу Zabbix.
+```
+sudo nano /etc/zabbix/zabbix_agentd.conf
+Server=89.169.148.254
+sudo sed -i 's/# Server=/Server=89.169.148.254/g' /etc/zabbix/zabbix_agentd.conf
+```
+
+## Задание 3 со звёздочкой*
+Установите Zabbix Agent на Windows (компьютер) и подключите его к серверу Zabbix.
+
+#### Ответ на задание 3
+1. У провайдера заказываем Статический белый IP
+2. В настройках роутера настраивает, статический IP для ПК в локальной сети, настраиваем переадрисацию на порт 10050.
+3. Устанавливаем Zabbix агент для Windows, при установке указываем адрес сервера Zabbix.
+4. Проверяем в правилах Брандмауэра открие порта 10050 и запуск службы zabbix agent.
+5. Добавляем наше устройство на сервер zabbix с указанием IP роутера и указываем нужный шаблон.
+6. Дожидаемся коннекта. 
