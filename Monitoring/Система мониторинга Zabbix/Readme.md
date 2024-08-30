@@ -46,8 +46,8 @@
   - Запустите процессы Zabbix сервера и агента
   Запустите процессы Zabbix сервера и агента и настройте их запуск при загрузке ОС.
   ```
-  systemctl restart zabbix-server zabbix-agent apache2
-  systemctl enable zabbix-server zabbix-agent apache2
+  sudo systemctl restart zabbix-server zabbix-agent apache2
+  sudo systemctl enable zabbix-server zabbix-agent apache2
   ```
 3. Авторизация ![admin.png](https://github.com/Nebsiw/Homeworks-sys33/blob/main/Monitoring/%D0%A1%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3%D0%B0%20Zabbix/images/admin.png)
 
