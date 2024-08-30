@@ -64,3 +64,54 @@ Update interval {$MEMORY_UTILIZATION}
 
 #### Ответ на задание 5
 ![Задание-5-maps.png]()
+
+### Задание 6* со звёздочкой
+Создайте UserParameter на bash и прикрепите его к созданному вами ранее шаблону. Он должен вызывать скрипт, который:
+- при получении 1 будет возвращать ваши ФИО,
+- при получении 2 будет возвращать текущую дату.
+
+#### Ответ на задание 6
+1. Создаем bash script [userparameter-fio-data.sh]()
+2. Копируем его на ВМ с zabbix-agent "Latyshev-2-deb" в директорию `/etc/zabbix/zabbix_agentd.d`.
+3. Создаем файл конфигурации в котором укажем новые UserParameter
+```
+UserParameter=fio-data[*], bash /etc/zabbix/zabbix_agentd.d/userparameter-fio-data.sh  $1
+```
+4. Перезапускаем zabbix-agent `sudo systemctl zabbix-agent`
+5. На второй ВМ машине "Latyshev-1-deb" устанавливаем zabbix-get
+`sudo apt install zabbix-get`
+6. Со второй ВМ машины "Latyshev-1-deb" делаем запрос с помощью zabbix-get на первую ВМ
+```
+zabbix_get -s 89.169.128.33 -p 10050 -k "fio-data[1]" #Получили ФИО
+zabbix_get -s 89.169.128.33 -p 10050 -k "fio-data[2]" #Получили дату
+```
+27. В нашем созданном шаблоне добавляем новые item:
+  - один item с key fio-data[1] он будет возвращать ФИО
+  - второй item с key fio-data[2] он будет возвращать дату
+8. Обновляем LatestData.
+9. ![Задание-6-userparameter.png]()
+
+### Задание 7* со звёздочкой
+Доработайте Python-скрипт из лекции, создайте для него UserParameter и прикрепите его к созданному вами ранее шаблону. 
+Скрипт должен:
+- при получении 1 возвращать ваши ФИО,
+- при получении 2 возвращать текущую дату,
+- делать всё, что делал скрипт из лекции.
+
+#### Ответ на задание 7
+1. Копируем скрипт из задания и редактируем в соответствие с заданием, добавляем туда данные из нашего прошлого скрипта:  
+[test_python_script]()
+2. Копируем готовый скрипт на ВМ с zabbix-agent "Latyshev-2-deb" в директорию `/etc/zabbix/zabbix_agentd.d`
+3. В созданном ранее файле конфигурации добавляем новый UserParameter :
+`UserParameter=python-script[*], python3 /etc/zabbix/zabbix_agentd.d/test_python_script.py $1 $2`
+3. Делаем тестовые запросы по аналогии выше с другой ВМ. Убеждаем в корректности конфигурации.
+4. В нашем шаблоне создаем новые item:
+  - python-fio key python-script[1]
+  - python-data key python-script[2]
+  - python-ping key python-script[-ping, 8.8.8.8]
+  - python-simple-print key python-script[-simple_print, 8.8.8.8]
+  - Type of information на всех указываем `Text`
+5. ![Задание-7-python.png]()
+
+
+  
