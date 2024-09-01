@@ -81,8 +81,8 @@ find / -name zabbix_agentd.conf
 ```
 sudo nano /etc/zabbix/zabbix_agentd.conf
 Server=89.169.148.254
-sudo sed -i 's/# Server=/Server=89.169.134.32/g' /etc/zabbix/zabbix_agentd.conf
-sudo sed -i 's/ServerActive=/ServerActive=89.169.134.32/g' /etc/zabbix/zabbix_agentd.conf
+sudo sed -i 's/Server=127.0.0.1/Server=127.0.0.1,89.169.134.32/g' /etc/zabbix/zabbix_agentd.conf
+sudo sed -i 's/ServerActive=127.0.0.1/ServerActive=89.169.134.32/g' /etc/zabbix/zabbix_agentd.conf
 ```
 
 ## Задание 3 со звёздочкой*
