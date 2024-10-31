@@ -80,3 +80,4 @@ yc vpc subnet create \
   yc vpc network delete netology
   ```
 13. Для удобства настройки из пункта 8 можно закинуть в скрипт. 
+511hbkjhhbhjb
